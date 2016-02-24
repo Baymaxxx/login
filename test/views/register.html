@@ -24,7 +24,7 @@
         <div class="content">
             <!-- 这里是页面内容区 -->
             <h4 class="login-title">客户系统</h4>
-            <form class="content-padded">
+            <form class="content-padded"  method="post" onsubmit="return false">
                 <div class="row">
                     <label for="username" class="col-30 form-left">输入账号</label>
                     <input id="username" class="col-70 form-right" type="text">
@@ -46,7 +46,7 @@
 </div>
 
 <script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<!--<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>-->
 <script>
     $('#goHistory').click(function(){
         history.go(-1);
@@ -56,7 +56,7 @@
         var username = $('#username').val();
         var password = $('#password').val();
         var password1 = $('#password_re').val();
-        if(password != password){
+        if(password1 != password){
             $("#password").css("border","1px solid red");
             $("#password1").css("border","1px solid red");
         }else{

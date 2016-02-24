@@ -7,21 +7,22 @@ router.get('/', function(req, res, next) {
 });
 
 router.route('/login').get(function(req,res){
-  res.render("login").post(function(req,res){
+  res.render("login");}).post(function(req,res){
     //get User info
-    //ÕâÀïµÄUser¾ÍÊÇ´ÓmodelÖĞ»ñÈ¡user¶ÔÏó£¬Í¨¹ıglobal.dbHandelÈ«¾Ö·½·¨£¨Õâ¸ö·½·¨ÔÚapp.jsÖĞÒÑ¾­ÊµÏÖ)
+    //è¿™é‡Œçš„Userå°±æ˜¯ä»modelä¸­è·å–userå¯¹è±¡ï¼Œé€šè¿‡global.dbHandelå…¨å±€æ–¹æ³•ï¼ˆè¿™ä¸ªæ–¹æ³•åœ¨app.jsä¸­å·²ç»å®ç°)
     var User = global.dbHandel.getModel('user');
     var uname = req.body.uname;
+    console.log(uname);
     User.findOne({name:uname},function(err,doc){
       if(err){
         res.send(500);
         console.log(err);
       }else if(!doc){
-        req.session.error = 'ÓÃ»§Ãû²»´æÔÚ';
+        req.session.error = 'ç”¨æˆ·åä¸å­˜åœ¨';
         res.send(404);
       }else{
         if(req.body.upwd != doc.password){
-          req.session.error = 'ÃÜÂë´íÎó';
+          req.session.error = 'å¯†ç é”™è¯¯';
           res.send(404);
         }else{
           req.session.user = doc;
@@ -29,26 +30,24 @@ router.route('/login').get(function(req,res){
         }
       }
     })
-  })
-});
+  });
 
-router.route("/register.html").get(function(req,res){    // µ½´ï´ËÂ·¾¶ÔòäÖÈ¾registerÎÄ¼ş£¬²¢´«³ötitleÖµ¹© register.htmlÊ¹ÓÃ
-  res.render("register");
-}).post(function(req,res){
-  //ÕâÀïµÄUser¾ÍÊÇ´ÓmodelÖĞ»ñÈ¡user¶ÔÏó£¬Í¨¹ıglobal.dbHandelÈ«¾Ö·½·¨£¨Õâ¸ö·½·¨ÔÚapp.jsÖĞÒÑ¾­ÊµÏÖ)
+router.route("/register").get(function(req,res){    // åˆ°è¾¾æ­¤è·¯å¾„åˆ™æ¸²æŸ“registeræ–‡ä»¶ï¼Œå¹¶ä¼ å‡ºtitleå€¼ä¾› register.htmlä½¿ç”¨
+  res.render("register");}).post(function(req,res){
+  //è¿™é‡Œçš„Userå°±æ˜¯ä»modelä¸­è·å–userå¯¹è±¡ï¼Œé€šè¿‡global.dbHandelå…¨å±€æ–¹æ³•ï¼ˆè¿™ä¸ªæ–¹æ³•åœ¨app.jsä¸­å·²ç»å®ç°)
   var User = global.dbHandel.getModel('user');
   var uname = req.body.uname;
   var upwd = req.body.upwd;
-  User.findOne({name: uname},function(err,doc){   // Í¬Àí /login Â·¾¶µÄ´¦Àí·½Ê½
+  User.findOne({name: uname},function(err,doc){   // åŒç† /login è·¯å¾„çš„å¤„ç†æ–¹å¼
     if(err){
       res.send(500);
-      req.session.error =  'ÍøÂçÒì³£´íÎó£¡';
+      req.session.error =  'ç½‘ç»œå¼‚å¸¸é”™è¯¯ï¼';
       console.log(err);
     }else if(doc){
-      req.session.error = 'ÓÃ»§ÃûÒÑ´æÔÚ£¡';
+      req.session.error = 'ç”¨æˆ·åå·²å­˜åœ¨ï¼';
       res.send(500);
     }else{
-      User.create({                             // ´´½¨Ò»×éuser¶ÔÏóÖÃÈëmodel
+      User.create({                             // åˆ›å»ºä¸€ç»„userå¯¹è±¡ç½®å…¥model
         name: uname,
         password: upwd
       },function(err,doc){
@@ -56,7 +55,7 @@ router.route("/register.html").get(function(req,res){    // µ½´ï´ËÂ·¾¶ÔòäÖÈ¾regi
           res.send(500);
           console.log(err);
         } else {
-          req.session.error = 'ÓÃ»§Ãû´´½¨³É¹¦£¡';
+          req.session.error = 'ç”¨æˆ·ååˆ›å»ºæˆåŠŸï¼';
           res.send(200);
         }
       });
@@ -65,15 +64,15 @@ router.route("/register.html").get(function(req,res){    // µ½´ï´ËÂ·¾¶ÔòäÖÈ¾regi
 });
 
 router.get("/home",function(req,res){
-  if(!req.session.user){                     //µ½´ï/homeÂ·¾¶Ê×ÏÈÅĞ¶ÏÊÇ·ñÒÑ¾­µÇÂ¼
-    req.session.error = "ÇëÏÈµÇÂ¼"
-    res.redirect("/login");                //Î´µÇÂ¼ÔòÖØ¶¨Ïòµ½ /login Â·¾¶
+  if(!req.session.user){                     //åˆ°è¾¾/homeè·¯å¾„é¦–å…ˆåˆ¤æ–­æ˜¯å¦å·²ç»ç™»å½•
+    req.session.error = "è¯·å…ˆç™»å½•";
+    res.redirect("/login");                //æœªç™»å½•åˆ™é‡å®šå‘åˆ° /login è·¯å¾„
   }
-  res.render("home");         //ÒÑµÇÂ¼ÔòäÖÈ¾homeÒ³Ãæ
+  res.render("home",{title:req.session.user});         //å·²ç™»å½•åˆ™æ¸²æŸ“homeé¡µé¢
 });
 
 /* GET logout page. */
-router.get("/logout",function(req,res){    // µ½´ï /logout Â·¾¶ÔòµÇ³ö£¬ sessionÖĞuser,error¶ÔÏóÖÃ¿Õ£¬²¢ÖØ¶¨Ïòµ½¸ùÂ·¾¶
+router.get("/logout",function(req,res){    // åˆ°è¾¾ /logout è·¯å¾„åˆ™ç™»å‡ºï¼Œ sessionä¸­user,errorå¯¹è±¡ç½®ç©ºï¼Œå¹¶é‡å®šå‘åˆ°æ ¹è·¯å¾„
   req.session.user = null;
   req.session.error = null;
   res.redirect("/");

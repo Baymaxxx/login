@@ -24,7 +24,7 @@
         <div class="content">
             <!-- 这里是页面内容区 -->
             <h4 class="login-title">客户系统</h4>
-            <form class="content-padded">
+            <form class="content-padded"  method="post" onsubmit="return false">
                 <div class="row">
                     <label for="username" class="col-30 form-left">输入账号</label>
                     <input id="username" class="col-70 form-right" type="text">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form_btn">
                     <button type="button" id="login_btn" class="button login_btn">登录</button>
-                    <a class="no_username" href="/register.html">没有账号点这里</a>
+                    <a class="no_username" href="/register">没有账号点这里</a>
                 </div>
             </form>
         </div>
@@ -43,7 +43,7 @@
 </div>
 
 <script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<!--<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>-->
 <script>
     $('#goHistory').click(function(){
         history.go(-1);
@@ -52,6 +52,7 @@
         var username = $("#username").val();
         var password = $("#password").val();
         var data = {"uname":username,"upwd":password};
+        console.log(data);
         $.ajax({
             url:'/login',
             type:'post',
@@ -64,7 +65,6 @@
             error: function(data,status){
                 if(status == 'error'){
                     location.href = 'login';
-                    alert('错误');
                 }
             }
         });
