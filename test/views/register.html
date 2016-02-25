@@ -12,7 +12,7 @@
     <meta content="email=no" name="format-detection">
 
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <link rel="stylesheet" href="/stylesheets/mystyle.css"/>
+    <link rel="stylesheet" href="/css/mystyle.css"/>
 </head>
 <body>
 <div class="page-group page-login">
@@ -24,18 +24,33 @@
         <div class="content">
             <!-- 这里是页面内容区 -->
             <h4 class="login-title">客户系统</h4>
-            <form class="content-padded"  method="post" onsubmit="return false">
+            <form class="content-padded" id="regForm"  method="post" onsubmit="return false">
                 <div class="row">
-                    <label for="username" class="col-30 form-left">输入账号</label>
-                    <input id="username" class="col-70 form-right" type="text">
+                    <label for="phoneNum" class="col-30 form-left">手机号</label>
+                    <input id="phoneNum" name="phoneNum" placeholder="输入您的手机号" class="col-70 form-right" type="tel">
                 </div>
                 <div class="row">
                     <label for="password" class="col-30 form-left">输入密码</label>
-                    <input id="password" class="col-70 form-right" type="password">
+                    <input id="password" name="password" placeholder="密码为6-16位" class="col-70 form-right" type="password">
                 </div>
                 <div class="row">
                     <label for="password_re" class="col-30 form-left">再次输入</label>
-                    <input id="password_re" class="col-70 form-right" type="password">
+                    <input id="password_re" name="password_re" placeholder="要和上面密码一样哦" class="col-70 form-right" type="password">
+                </div>
+                <div class="row">
+                    <label for="trueName" class="col-30 form-left">真实姓名</label>
+                    <input id="trueName" name="trueName" placeholder="必须是真实姓名哦" class="col-70 form-right" type="text">
+                </div>
+                <div class="row">
+                    <label for="idNum" class="col-30 form-left">身份证号</label>
+                    <input id="idNum" name="idNum" placeholder="一定要真实的身份证号哦"  class="col-70 form-right" type="text">
+                </div>
+                <div class="row">
+                    <label for="email" class="col-30 form-left">邮箱</label>
+                    <input id="email" name="email" placeholder="填写你的邮箱" class="col-70 form-right" type="text">
+                </div>
+                <div class="row">
+                    <p style="text-align: center">字体为红色即为验证不通过</p>
                 </div>
                 <div class="form_btn">
                     <button type="button" id="register_btn" class="button login_btn">注册账号</button>
@@ -45,38 +60,83 @@
     </div>
 </div>
 
-<script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script src="//cdn.bootcss.com/jquery/1.12.0/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/validate-methods.js"></script>
 <!--<script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>-->
 <script>
     $('#goHistory').click(function(){
         history.go(-1);
     });
-    $('#register_btn').click(function(){
-        console.log("1");
-        var username = $('#username').val();
-        var password = $('#password').val();
-        var password1 = $('#password_re').val();
-        if(password1 != password){
-            $("#password").css("border","1px solid red");
-            $("#password1").css("border","1px solid red");
-        }else{
-            var data = {"uname":username,"upwd":password};
-            $.ajax({
-                url:'/register',
-                type:'post',
-                data:data,
-                success:function(data,status){
-                    if(status == 'success'){
-                        location.href = 'login';
+    $("#regForm").validate({
+//        onkeyup:true,
+        rules: {
+            phoneNum: {
+                required:true,
+                isMobile:true
+            },
+            password: {
+                required:true,
+                rangelength:[6,16]
+            },
+            password_re:{
+                required:true,
+                equalTo:"#password"
+            },
+            trueName: {
+                required: true,
+                isChinese:true,
+                rangelength:[2,4]
+            },
+            idNum: {
+                required: true,
+                isIdCardNo:true
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            phoneNum:"",
+            password: "",
+            password_re:"",
+            trueName: "",
+            idNum: "",
+            email: ""
+        },
+        submitHandler: function(form)
+        {
+        },
+        success: regAjax
+    });
+    var regAjax = (function() {
+        $('#register_btn').click(function () {
+            console.log("1");
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var password1 = $('#password_re').val();
+            if (password1 != password) {
+                return;
+            } else {
+                var data = {"uname": username, "upwd": password};
+                $.ajax({
+                    url: '/register',
+                    type: 'post',
+                    data: data,
+                    success: function (data, status) {
+                        if (status == 'success') {
+                            location.href = 'login';
+                        }
+                    },
+                    error: function (data, err) {
+                        location.href = 'register';
+                        alert('错误');
                     }
-                },
-                error:function(data,err){
-                    location.href = 'register';
-                    alert('错误');
-                }
-            })
-        }
-    })
+                })
+            }
+        });
+    }());
 </script>
 </body>
 </html>

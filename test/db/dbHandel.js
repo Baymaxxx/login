@@ -8,9 +8,7 @@ for(var m in models){
 
 module.exports = {
     getModel:function(type){
-        return _getModel(type);
+        return mongoose.model(type);
     }
 };
-var _getModel = function(type){
-    return mongoose.model(type);
-};
+

@@ -1,6 +1,13 @@
 module.exports = {
     user:{
-        name:{type:String,required:true},
-        password:{type:String,required:true}
+        phoneNum:{type:Number,required:true},
+        password:{type:String,required:true},
+        idNum:{type:Number,required:true},
+        admin:{type:Boolean},
+        email:{type:String},
+        trueName:{type:String},
+    },
+    museum:{
+        name:{type:String,required:true}
     }
 };
