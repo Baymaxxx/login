@@ -113,28 +113,32 @@
     var regAjax = (function() {
         $('#register_btn').click(function () {
             console.log("1");
-            var username = $('#username').val();
+            var username = $('#phoneNum').val();
             var password = $('#password').val();
-            var password1 = $('#password_re').val();
-            if (password1 != password) {
-                return;
-            } else {
-                var data = {"uname": username, "upwd": password};
-                $.ajax({
-                    url: '/register',
-                    type: 'post',
-                    data: data,
-                    success: function (data, status) {
-                        if (status == 'success') {
-                            location.href = 'login';
-                        }
-                    },
-                    error: function (data, err) {
-                        location.href = 'register';
-                        alert('错误');
+            var trueName = $('#trueName').val();
+            var idNum = $('#idNum').val();
+            var email = $('#email').val();
+            var data = {
+                "uname": username,
+                "upwd": password,
+                "trueName":trueName,
+                "idNum":idNum,
+                "email":email
+            };
+            $.ajax({
+                url: '/register',
+                type: 'post',
+                data: data,
+                success: function (data, status) {
+                    if (status == 'success') {
+                        location.href = 'login';
                     }
-                })
-            }
+                },
+                error: function (data, err) {
+                    location.href = 'register';
+                    alert('错误');
+                }
+            })
         });
     }());
 </script>

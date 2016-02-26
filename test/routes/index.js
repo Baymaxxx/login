@@ -13,7 +13,8 @@ router.route('/login').get(function(req,res){
     var User = global.dbHandel.getModel('user');
     var uname = req.body.uname;
     console.log(uname);
-    User.findOne({name:uname},function(err,doc){
+    User.findOne({phoneNum:uname},function(err,doc){
+      console.log(doc);
       if(err){
         res.send(500);
         console.log(err);
@@ -38,6 +39,9 @@ router.route("/register").get(function(req,res){    // 到达此路径则渲染r
   var User = global.dbHandel.getModel('user');
   var uname = req.body.uname;
   var upwd = req.body.upwd;
+  var trueName = req.body.trueName;
+  var idNum = req.body.idNum;
+  var email = req.body.email;
   User.findOne({name: uname},function(err,doc){   // 同理 /login 路径的处理方式
     if(err){
       res.send(500);
@@ -48,8 +52,11 @@ router.route("/register").get(function(req,res){    // 到达此路径则渲染r
       res.send(500);
     }else{
       User.create({                             // 创建一组user对象置入model
-        name: uname,
-        password: upwd
+        phoneNum: uname,
+        password: upwd,
+        trueName:trueName,
+        idNum:idNum,
+        email:email
       },function(err,doc){
         if (err) {
           res.send(500);
