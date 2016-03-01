@@ -8,10 +8,9 @@ var multer = require('multer');
 var mongoose = require('mongoose');
 var session = require('express-session');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
+
 //session
 app.use(session({
   secret:'secret',
@@ -58,14 +57,7 @@ app.use(cpUpload);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
-
-app.use('/login',routes);
-app.use('/register',routes);
-app.use('/home',routes);
-app.use('/logout',routes);
-
+require('./routes')(app);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

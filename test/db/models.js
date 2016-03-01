@@ -8,6 +8,8 @@ module.exports = {
         trueName:{type:String},
     },
     museum:{
-        name:{type:String,required:true}
+        name:{type:String,required:true},
+        price:{type:Number,required:true},
+        imgSrc:{type:String,required:true}
     }
 };
